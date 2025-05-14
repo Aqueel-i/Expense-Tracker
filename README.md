@@ -25,7 +25,7 @@ A sleek, responsive, and modern web-based Expense Tracker built using **HTML**, 
 
 1. **Clone this repository**
    ```bash
-   git clone https://github.com/yourusername/expense-tracker.git
+   git clone https://github.com/Aqueel-i/expense-tracker.git
    cd expense-tracker
 
 
@@ -39,5 +39,6 @@ A sleek, responsive, and modern web-based Expense Tracker built using **HTML**, 
 
         Weekly/monthly breakdowns
 
-🧑‍💻 Author
-Developed with ❤️ Aqueel
+🧑‍💻 Author - Aqueel
+
+Developed with ❤️ 
