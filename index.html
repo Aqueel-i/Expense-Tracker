@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Title -->
+        <h1>Expense Tracker</h1>
+
+        <!-- Current Balance -->
+        <div class="balance">
+            <h2>Balance: <span id="balance">Rs. 0.00</span></h2>
+        </div>
+
+        <!-- Transaction Form -->
+        <form id="transaction-form">
+            <select id="type">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+            <input type="text" id="description" placeholder="Description" required />
+            <input type="number" id="amount" placeholder="Amount" required />
+            <input type="date" id="date" required />
+            <button type="submit">Add Transaction</button>
+        </form>
+
+        <!-- Filter Buttons -->
+        <div class="filter">
+            <button onclick="filterTransactions('all')">All</button>
+            <button onclick="filterTransactions('income')">Income</button>
+            <button onclick="filterTransactions('expense')">Expense</button>
+        </div>
+
+        <!-- Transaction List -->
+        <ul id="transaction-list"></ul>
+
+        <!-- Donut Chart -->
+        <div id="expense-chart" class="chart-container"></div>
+
+        <!-- Theme Switch (Dark/Light) -->
+        <div class="theme-switch">
+            <label>
+                <input type="checkbox" id="theme-toggle" />
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
