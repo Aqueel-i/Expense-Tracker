@@ -1,63 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="light">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expense Tracker</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6f8">
+  <meta name="description" content="A private, easy-to-use personal finance dashboard for tracking spending, income, and monthly budgets.">
+  <title>Ledger — Personal finance, made clear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div class="container">
-        <!-- Title -->
-        <h1>Expense Tracker</h1>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Ledger home"><span class="brand-mark">L</span><span>ledger<span class="brand-period">.</span></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <a class="nav-link active" href="#overview"><span class="nav-icon">◫</span>Overview</a>
+      <a class="nav-link" href="#transactions"><span class="nav-icon">↕</span>Transactions</a>
+      <a class="nav-link" href="#budget-card"><span class="nav-icon">◷</span>Monthly budget</a>
+      <div class="sidebar-bottom">
+        <div class="privacy-note"><span class="privacy-dot"></span><div><strong>Your data stays yours</strong><small>Saved on this device</small></div></div>
+        <button class="nav-link theme-button" id="theme-toggle" type="button"><span class="nav-icon" id="theme-icon">☾</span><span id="theme-label">Dark appearance</span></button>
+      </div>
+    </aside>
 
-        <!-- Current Balance -->
-        <div class="balance">
-            <h2>Balance: <span id="balance">Rs. 0.00</span></h2>
-        </div>
+    <main class="main-content" id="top">
+      <header class="topbar">
+        <div><p class="eyebrow" id="today-label">PERSONAL FINANCE</p><h1>Good money habits start here.</h1></div>
+        <div class="top-actions"><label class="currency-control"><span class="sr-only">Currency</span><select id="currency-select" aria-label="Display currency"><option value="LKR">LKR · Rs</option><option value="USD">USD · $</option><option value="EUR">EUR · €</option><option value="GBP">GBP · £</option><option value="INR">INR · ₹</option><option value="AUD">AUD · A$</option><option value="CAD">CAD · C$</option></select></label><button class="button button-primary top-add" type="button" id="add-transaction-top"><span>＋</span> Add transaction</button></div>
+      </header>
 
-        <!-- Transaction Form -->
-        <form id="transaction-form">
-            <select id="type">
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-            </select>
-            <input type="text" id="description" placeholder="Description" required />
-            <input type="number" id="amount" placeholder="Amount" required />
-            <input type="date" id="date" required />
-            <button type="submit">Add Transaction</button>
-        </form>
+      <section class="month-toolbar" id="overview" aria-label="Dashboard period">
+        <div><h2>Your overview</h2><p>A clear picture of where you stand.</p></div>
+        <label class="month-picker"><span class="sr-only">Choose month</span><button id="prev-month" class="icon-button" aria-label="Previous month" type="button">‹</button><input id="month-select" type="month" aria-label="Selected month"><button id="next-month" class="icon-button" aria-label="Next month" type="button">›</button></label>
+      </section>
 
-        <!-- Filter Buttons -->
-        <div class="filter">
-            <button onclick="filterTransactions('all')">All</button>
-            <button onclick="filterTransactions('income')">Income</button>
-            <button onclick="filterTransactions('expense')">Expense</button>
-        </div>
+      <section class="summary-grid" aria-label="Financial summary">
+        <article class="summary-card balance-card"><div class="summary-top"><span class="summary-label">TOTAL BALANCE</span><span class="summary-icon balance-icon">◈</span></div><p class="summary-value" id="total-balance">Rs 0.00</p><p class="summary-caption">Across all your activity</p><div class="balance-decoration" aria-hidden="true"></div></article>
+        <article class="summary-card"><div class="summary-top"><span class="summary-label">INCOME THIS MONTH</span><span class="summary-icon income-icon">↗</span></div><p class="summary-value" id="month-income">Rs 0.00</p><p class="summary-caption"><span class="trend-dot income-dot"></span>Money coming in</p></article>
+        <article class="summary-card"><div class="summary-top"><span class="summary-label">SPENDING THIS MONTH</span><span class="summary-icon expense-icon">↘</span></div><p class="summary-value" id="month-expenses">Rs 0.00</p><p class="summary-caption"><span class="trend-dot expense-dot"></span>Money going out</p></article>
+        <article class="summary-card"><div class="summary-top"><span class="summary-label">SAVINGS RATE</span><span class="summary-icon savings-icon">✳</span></div><p class="summary-value" id="savings-rate">0%</p><p class="summary-caption" id="savings-caption">Income left after spending</p></article>
+      </section>
 
-        <!-- Transaction List -->
-        <ul id="transaction-list"></ul>
+      <section class="dashboard-grid">
+        <article class="panel spending-panel"><div class="panel-heading"><div><h2>Spending breakdown</h2><p>Where your money went this month</p></div><span class="panel-period" id="chart-period"></span></div><div class="chart-layout"><div class="donut-wrap"><div class="donut-chart" id="donut-chart" role="img" aria-label="Spending by category"><div class="donut-hole"><span>Total spent</span><strong id="chart-total">Rs 0</strong></div></div></div><div class="category-legend" id="category-legend"><div class="empty-chart">Your category breakdown will show up here.</div></div></div></article>
+        <article class="panel budget-panel" id="budget-card"><div class="panel-heading"><div><h2>Monthly budget</h2><p>Give your spending a helpful limit</p></div><span class="budget-icon">◎</span></div><div class="budget-total"><div><span class="summary-label">MONTHLY LIMIT</span><strong id="budget-amount">Rs 0</strong></div><button class="text-button" id="edit-budget" type="button">Set budget <span>↗</span></button></div><div class="progress-track"><div class="progress-fill" id="budget-progress"></div></div><div class="budget-foot"><span id="budget-spent">Rs 0 spent</span><span id="budget-remaining">Set a monthly limit</span></div><div class="budget-hint" id="budget-hint">A budget helps you stay intentional, one month at a time.</div></article>
+      </section>
 
-        <!-- Donut Chart -->
-        <div id="expense-chart" class="chart-container"></div>
+      <section class="panel transactions-panel" id="transactions">
+        <div class="transactions-heading"><div><h2>Recent transactions</h2><p id="transaction-count">Your latest money moves</p></div><button class="button button-outline export-button" id="export-csv" type="button"><span>↓</span> Export CSV</button></div>
+        <div class="transaction-tools"><label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search transactions..." autocomplete="off"><kbd>⌘ K</kbd></label><label class="select-control"><span class="sr-only">Type filter</span><select id="type-filter"><option value="all">All types</option><option value="expense">Expenses</option><option value="income">Income</option></select></label><label class="select-control"><span class="sr-only">Sort order</span><select id="sort-select"><option value="date-desc">Newest first</option><option value="date-asc">Oldest first</option><option value="amount-desc">Highest amount</option><option value="amount-asc">Lowest amount</option></select></label><label class="select-control"><span class="sr-only">Category filter</span><select id="category-filter"><option value="all">All categories</option></select></label><button class="button button-quiet import-button" id="import-trigger" type="button">↑ Import</button><input class="sr-only" type="file" id="import-file" accept=".csv,text/csv"></div>
+        <div class="table-wrap"><table><thead><tr><th>TRANSACTION</th><th>CATEGORY</th><th>DATE</th><th>TYPE</th><th class="amount-heading">AMOUNT</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody id="transaction-list"></tbody></table><div class="empty-state" id="empty-state"><span class="empty-illustration">↕</span><strong>No transactions yet</strong><p>Add your first transaction to see your money story take shape.</p><button class="button button-primary" id="empty-add" type="button">＋ Add a transaction</button></div></div>
+        <footer class="table-footer"><span id="result-count"></span><button class="text-button clear-filters" id="clear-filters" type="button">Clear filters</button></footer>
+      </section>
+      <footer class="app-footer"><span>Made for mindful money moments.</span><span>Private by design · Saved locally</span></footer>
+    </main>
+  </div>
 
-        <!-- Theme Switch (Dark/Light) -->
-        <div class="theme-switch">
-            <label>
-                <input type="checkbox" id="theme-toggle" />
-                <span class="slider"></span>
-            </label>
-        </div>
-    </div>
+  <dialog id="transaction-dialog" class="dialog-card"><form id="transaction-form" method="dialog"><div class="dialog-heading"><div><span class="eyebrow">YOUR MONEY, YOUR WAY</span><h2 id="dialog-title">Add transaction</h2></div><button class="icon-button dialog-close" type="button" aria-label="Close">×</button></div><div class="type-tabs" role="group" aria-label="Transaction type"><button type="button" class="type-tab active" data-type="expense">Expense</button><button type="button" class="type-tab" data-type="income">Income</button></div><input type="hidden" id="transaction-id"><input type="hidden" id="transaction-type" value="expense"><label class="field-label" for="description">Description</label><input class="form-input" id="description" name="description" maxlength="80" placeholder="e.g. Weekly groceries" required><div class="form-row"><div><label class="field-label" for="amount">Amount</label><input class="form-input" id="amount" name="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00" required></div><div><label class="field-label" for="date">Date</label><input class="form-input" id="date" name="date" type="date" required></div></div><div class="form-row"><div><label class="field-label" for="category">Category</label><select class="form-input" id="category" name="category"></select></div><div><label class="field-label" for="note">Note <span class="optional-label">Optional</span></label><input class="form-input" id="note" name="note" maxlength="120" placeholder="Add a little detail"></div></div><div class="dialog-actions"><button class="button button-outline dialog-cancel" type="button">Cancel</button><button class="button button-primary" id="save-transaction" type="submit">Save transaction</button></div></form></dialog>
 
-    <!-- Toast Notification Container -->
-    <div id="toast-container"></div>
-
-    <!-- Script -->
-    <script src="script.js"></script>
+  <dialog id="budget-dialog" class="dialog-card budget-dialog"><form id="budget-form" method="dialog"><div class="dialog-heading"><div><span class="eyebrow">A LITTLE STRUCTURE</span><h2>Set monthly budget</h2></div><button class="icon-button budget-close" type="button" aria-label="Close">×</button></div><p class="dialog-copy">Choose a spending limit for <strong id="budget-month-label"></strong>.</p><label class="field-label" for="budget-input">Budget amount</label><input class="form-input" id="budget-input" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 50000"><div class="dialog-actions"><button class="button button-outline budget-cancel" type="button">Cancel</button><button class="button button-primary" type="submit">Save budget</button></div></form></dialog>
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <script src="script.js"></script>
 </body>
-
 </html>
